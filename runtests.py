@@ -3,6 +3,7 @@
 import os
 import sys
 
+import django
 from django.conf import settings
 
 
@@ -14,6 +15,10 @@ def runtests():
 
     if not settings.configured:
         os.environ['DJANGO_SETTINGS_MODULE'] = 'timezone_field.test_settings'
+
+    # Compatibility with Django 1.7's stricter initialization
+    if hasattr(django, 'setup'):
+        django.setup()
 
     import timezone_field.test_settings  # Fixes Django 1.4 bug
     from django.test.simple import DjangoTestSuiteRunner
